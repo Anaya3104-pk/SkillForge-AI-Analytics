@@ -31,7 +31,7 @@ interface RevenueTrendRow extends RowDataPacket {
   revenue: number;
 }
 
-interface EnrollmentStatusRow extends RowDataPacket {
+interface enrollmentStatusRow extends RowDataPacket {
   status: string;
   count: number;
 }
@@ -51,42 +51,42 @@ interface FeatureUsageRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
-    // 1. Total Users
-    // -----------------------------------------
+    
+    // 1. Total users
+    
     const [userRows] = await pool.query<UserRow[]>(`
       SELECT COUNT(*) AS total_users
-      FROM Users
+      FROM users
     `);
 
-    // -----------------------------------------
-    // 2. Total Enrollments
-    // -----------------------------------------
+    
+    // 2. Total enrollments
+    
     const [enrollmentRows] = await pool.query<EnrollmentRow[]>(`
       SELECT COUNT(*) AS total_enrollments
-      FROM Enrollments
+      FROM enrollments
     `);
 
-    // -----------------------------------------
+    
     // 3. Successful Revenue
-    // -----------------------------------------
+    
     const [revenueRows] = await pool.query<RevenueRow[]>(`
       SELECT COALESCE(SUM(amount), 0) AS successful_revenue
-      FROM Payments
+      FROM payments
       WHERE payment_status = 'Success'
     `);
 
-    // -----------------------------------------
+    
     // 4. Total AI Chats
-    // -----------------------------------------
+    
     const [aiChatRows] = await pool.query<AIChatRow[]>(`
       SELECT COUNT(*) AS total_ai_chats
-      FROM AI_Chats
+      FROM ai_chats
     `);
 
-    // -----------------------------------------
+    
     // 5. Completion Rate
-    // -----------------------------------------
+    
     const [completionRows] = await pool.query<CompletionRow[]>(`
       SELECT
         ROUND(
@@ -98,75 +98,75 @@ export async function GET() {
           ) / COUNT(*),
           2
         ) AS completion_rate
-      FROM Enrollments
+      FROM enrollments
     `);
 
-    // -----------------------------------------
+    
     // 6. Support Tickets
-    // -----------------------------------------
+    
     const [supportRows] = await pool.query<SupportRow[]>(`
       SELECT COUNT(*) AS total_support_tickets
-      FROM Support_Tickets
+      FROM support_tickets
     `);
 
-    // -----------------------------------------
+    
     // 7. Monthly Successful Revenue
-    // -----------------------------------------
+    
     const [revenueTrendRows] =
       await pool.query<RevenueTrendRow[]>(`
         SELECT
           DATE_FORMAT(payment_date, '%Y-%m') AS month,
           ROUND(SUM(amount), 2) AS revenue
-        FROM Payments
+        FROM payments
         WHERE payment_status = 'Success'
         GROUP BY DATE_FORMAT(payment_date, '%Y-%m')
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // 8. Enrollment Status
-    // -----------------------------------------
+    
     const [enrollmentStatusRows] =
-      await pool.query<EnrollmentStatusRow[]>(`
+      await pool.query<enrollmentStatusRow[]>(`
         SELECT
           completion_status AS status,
           COUNT(*) AS count
-        FROM Enrollments
+        FROM enrollments
         GROUP BY completion_status
         ORDER BY count DESC
       `);
 
-    // -----------------------------------------
-    // 9. Top 5 Courses by Enrollment
-    // -----------------------------------------
+    
+    // 9. Top 5 courses by Enrollment
+    
     const [topCourseRows] =
       await pool.query<TopCourseRow[]>(`
         SELECT
           c.course_name,
           COUNT(e.enrollment_id) AS enrollments
-        FROM Enrollments e
-        INNER JOIN Courses c
+        FROM enrollments e
+        INNER JOIN courses c
           ON e.course_id = c.course_id
         GROUP BY c.course_id, c.course_name
         ORDER BY enrollments DESC
         LIMIT 5
       `);
 
-    // -----------------------------------------
+    
     // 10. Total Login Activity
-    // -----------------------------------------
+    
     const [loginRows] = await pool.query<LoginRow[]>(`
       SELECT COUNT(*) AS total_logins
-      FROM Login_History
+      FROM login_history
     `);
 
-    // -----------------------------------------
+    
     // 11. Total Feature Usage
-    // -----------------------------------------
+    
     const [featureUsageRows] =
       await pool.query<FeatureUsageRow[]>(`
         SELECT COUNT(*) AS total_feature_usage
-        FROM Feature_Usage
+        FROM feature_usage
       `);
 
     return NextResponse.json({

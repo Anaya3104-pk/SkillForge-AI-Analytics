@@ -151,3 +151,38 @@ LEFT JOIN Certificates c
 WHERE e.completion_status = 'Completed'
   AND e.certificate_earned = 1
   AND c.certificate_id IS NULL;
+  
+  DESCRIBE Users;
+  
+  DESCRIBE Courses;
+  
+  DESCRIBE Categories;
+  
+  DESCRIBE Instructors;
+  
+  DESCRIBE Payments;
+  
+  DESCRIBE AI_Chats;
+  
+  DESCRIBE Feature_Usage;
+  
+  DESCRIBE Support_Tickets;
+  
+  DESCRIBE Subscription_Plans;
+  
+  SELECT 
+    t.TABLE_NAME
+FROM information_schema.TABLES t
+LEFT JOIN information_schema.TABLE_CONSTRAINTS tc
+    ON t.TABLE_SCHEMA = tc.TABLE_SCHEMA
+    AND t.TABLE_NAME = tc.TABLE_NAME
+    AND tc.CONSTRAINT_TYPE = 'PRIMARY KEY'
+WHERE t.TABLE_SCHEMA = 'skillforge_ai'
+  AND t.TABLE_TYPE = 'BASE TABLE'
+  AND tc.TABLE_NAME IS NULL;
+  
+  USE skillforge_ai;
+
+DROP TABLE certificates_backup;
+
+SHOW TABLES;

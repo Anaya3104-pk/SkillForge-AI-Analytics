@@ -44,9 +44,9 @@ interface MonthlyUsageRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
+    
     // 1. AI + engagement statistics
-    // -----------------------------------------
+    
     const [aiStatsRows] =
       await pool.query<AIStatsRow[]>(`
         SELECT
@@ -61,12 +61,12 @@ export async function GET() {
           AVG(tokens_used)
             AS average_tokens
 
-        FROM AI_Chats
+        FROM ai_chats
       `);
 
-    // -----------------------------------------
+    
     // 2. AI chat topics
-    // -----------------------------------------
+    
     const [topicRows] =
       await pool.query<TopicRow[]>(`
         SELECT
@@ -77,16 +77,16 @@ export async function GET() {
           AVG(satisfaction_rating)
             AS average_satisfaction
 
-        FROM AI_Chats
+        FROM ai_chats
 
         GROUP BY topic
 
         ORDER BY chats DESC
       `);
 
-    // -----------------------------------------
+    
     // 3. Satisfaction distribution
-    // -----------------------------------------
+    
     const [satisfactionRows] =
       await pool.query<SatisfactionRow[]>(`
         SELECT
@@ -94,7 +94,7 @@ export async function GET() {
 
           COUNT(*) AS chats
 
-        FROM AI_Chats
+        FROM ai_chats
 
         WHERE satisfaction_rating IS NOT NULL
 
@@ -103,9 +103,9 @@ export async function GET() {
         ORDER BY satisfaction_rating
       `);
 
-    // -----------------------------------------
+    
     // 4. Response-time distribution
-    // -----------------------------------------
+    
     const [responseTimeRows] =
       await pool.query<ResponseTimeRow[]>(`
         SELECT
@@ -127,7 +127,7 @@ export async function GET() {
 
           COUNT(*) AS chats
 
-        FROM AI_Chats
+        FROM ai_chats
 
         WHERE response_time_seconds IS NOT NULL
 
@@ -143,9 +143,9 @@ export async function GET() {
           END
       `);
 
-    // -----------------------------------------
+    
     // 5. Feature usage
-    // -----------------------------------------
+    
     const [featureRows] =
       await pool.query<FeatureRow[]>(`
         SELECT
@@ -156,16 +156,16 @@ export async function GET() {
           AVG(session_duration_minutes)
             AS average_session_duration
 
-        FROM Feature_Usage
+        FROM feature_usage
 
         GROUP BY feature_name
 
         ORDER BY usage_count DESC
       `);
 
-    // -----------------------------------------
+    
     // 6. Usage by device
-    // -----------------------------------------
+    
     const [deviceRows] =
       await pool.query<DeviceRow[]>(`
         SELECT
@@ -176,16 +176,16 @@ export async function GET() {
           AVG(session_duration_minutes)
             AS average_session_duration
 
-        FROM Feature_Usage
+        FROM feature_usage
 
         GROUP BY device
 
         ORDER BY usage_count DESC
       `);
 
-    // -----------------------------------------
+    
     // 7. Monthly feature usage
-    // -----------------------------------------
+    
     const [monthlyUsageRows] =
       await pool.query<MonthlyUsageRow[]>(`
         SELECT
@@ -197,7 +197,7 @@ export async function GET() {
 
           COUNT(*) AS usage_count
 
-        FROM Feature_Usage
+        FROM feature_usage
 
         GROUP BY DATE_FORMAT(
           usage_date,
@@ -207,9 +207,9 @@ export async function GET() {
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // Return API response
-    // -----------------------------------------
+    
     return NextResponse.json({
       stats: {
         totalAIChats: Number(

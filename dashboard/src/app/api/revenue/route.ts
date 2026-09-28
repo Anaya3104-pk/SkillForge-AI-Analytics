@@ -42,9 +42,9 @@ interface CouponRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
+    
     // 1. Revenue statistics
-    // -----------------------------------------
+    
     const [revenueStatsRows] =
       await pool.query<RevenueStatsRow[]>(`
         SELECT
@@ -105,34 +105,40 @@ export async function GET() {
             0
           ) AS average_transaction_value
 
-        FROM Payments
+        FROM payments
       `);
 
-    // -----------------------------------------
+    
     // 2. Monthly successful revenue
-    // -----------------------------------------
+    
     const [monthlyRevenueRows] =
       await pool.query<MonthlyRevenueRow[]>(`
         SELECT
 
-          DATE_FORMAT(payment_date, '%Y-%m') AS month,
+          DATE_FORMAT(
+            payment_date,
+            '%Y-%m'
+          ) AS month,
 
           SUM(amount) AS revenue,
 
           COUNT(*) AS transactions
 
-        FROM Payments
+        FROM payments
 
         WHERE payment_status = 'Success'
 
-        GROUP BY DATE_FORMAT(payment_date, '%Y-%m')
+        GROUP BY DATE_FORMAT(
+          payment_date,
+          '%Y-%m'
+        )
 
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // 3. Revenue by payment method
-    // -----------------------------------------
+    
     const [paymentMethodRows] =
       await pool.query<PaymentMethodRow[]>(`
         SELECT
@@ -155,16 +161,16 @@ export async function GET() {
             END
           ) AS transactions
 
-        FROM Payments
+        FROM payments
 
         GROUP BY payment_method
 
         ORDER BY revenue DESC
       `);
 
-    // -----------------------------------------
+    
     // 4. Payment status distribution
-    // -----------------------------------------
+    
     const [paymentStatusRows] =
       await pool.query<PaymentStatusRow[]>(`
         SELECT
@@ -178,16 +184,16 @@ export async function GET() {
             0
           ) AS amount
 
-        FROM Payments
+        FROM payments
 
         GROUP BY payment_status
 
         ORDER BY payments DESC
       `);
 
-    // -----------------------------------------
+    
     // 5. Revenue by subscription plan
-    // -----------------------------------------
+    
     const [subscriptionRevenueRows] =
       await pool.query<SubscriptionRevenueRow[]>(`
         SELECT
@@ -210,9 +216,9 @@ export async function GET() {
             END
           ) AS transactions
 
-        FROM Payments p
+        FROM payments p
 
-        INNER JOIN Subscription_Plans sp
+        INNER JOIN subscription_plans sp
           ON p.subscription_id = sp.subscription_id
 
         GROUP BY
@@ -222,9 +228,9 @@ export async function GET() {
         ORDER BY revenue DESC
       `);
 
-    // -----------------------------------------
+    
     // 6. Coupon / discount analysis
-    // -----------------------------------------
+    
     const [couponRows] =
       await pool.query<CouponRow[]>(`
         SELECT
@@ -248,12 +254,12 @@ export async function GET() {
             0
           ) AS discount_amount
 
-        FROM Payments
+        FROM payments
       `);
 
-    // -----------------------------------------
+    
     // Return API response
-    // -----------------------------------------
+    
     return NextResponse.json({
       stats: {
         successfulRevenue: Number(

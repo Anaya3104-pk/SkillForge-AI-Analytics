@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { RowDataPacket } from "mysql2";
 import pool from "@/lib/db";
 
-interface UserStatsRow extends RowDataPacket {
+interface userstatsRow extends RowDataPacket {
   total_users: number;
   active_users: number;
   inactive_users: number;
@@ -41,10 +41,10 @@ interface SignupTrendRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
+    
     // 1. User statistics
-    // -----------------------------------------
-    const [userStatsRows] = await pool.query<UserStatsRow[]>(`
+    
+    const [userstatsRows] = await pool.query<userstatsRow[]>(`
       SELECT
         COUNT(*) AS total_users,
 
@@ -69,21 +69,21 @@ export async function GET() {
           END
         ) AS suspended_users
 
-      FROM Users
+      FROM users
     `);
 
-    // -----------------------------------------
-    // 2. Users by subscription plan
-    // -----------------------------------------
+    
+    // 2. users by subscription plan
+    
     const [subscriptionRows] =
       await pool.query<SubscriptionRow[]>(`
         SELECT
           sp.plan_name AS subscription_name,
           COUNT(u.user_id) AS users
 
-        FROM Users u
+        FROM users u
 
-        INNER JOIN Subscription_Plans sp
+        INNER JOIN subscription_plans sp
           ON u.subscription_id = sp.subscription_id
 
         GROUP BY
@@ -93,16 +93,16 @@ export async function GET() {
         ORDER BY users DESC
       `);
 
-    // -----------------------------------------
-    // 3. Users by state
-    // -----------------------------------------
+    
+    // 3. users by state
+    
     const [stateRows] =
       await pool.query<StateRow[]>(`
         SELECT
           state,
           COUNT(*) AS users
 
-        FROM Users
+        FROM users
 
         WHERE state IS NOT NULL
           AND state <> ''
@@ -114,16 +114,16 @@ export async function GET() {
         LIMIT 10
       `);
 
-    // -----------------------------------------
-    // 4. Users by profession
-    // -----------------------------------------
+    
+    // 4. users by profession
+    
     const [professionRows] =
       await pool.query<ProfessionRow[]>(`
         SELECT
           profession,
           COUNT(*) AS users
 
-        FROM Users
+        FROM users
 
         WHERE profession IS NOT NULL
           AND profession <> ''
@@ -133,16 +133,16 @@ export async function GET() {
         ORDER BY users DESC
       `);
 
-    // -----------------------------------------
-    // 5. Users by experience level
-    // -----------------------------------------
+    
+    // 5. users by experience level
+    
     const [experienceRows] =
       await pool.query<ExperienceRow[]>(`
         SELECT
           experience_level,
           COUNT(*) AS users
 
-        FROM Users
+        FROM users
 
         WHERE experience_level IS NOT NULL
           AND experience_level <> ''
@@ -152,16 +152,16 @@ export async function GET() {
         ORDER BY users DESC
       `);
 
-    // -----------------------------------------
-    // 6. Users by gender
-    // -----------------------------------------
+    
+    // 6. users by gender
+    
     const [genderRows] =
       await pool.query<GenderRow[]>(`
         SELECT
           gender,
           COUNT(*) AS users
 
-        FROM Users
+        FROM users
 
         WHERE gender IS NOT NULL
 
@@ -170,41 +170,41 @@ export async function GET() {
         ORDER BY users DESC
       `);
 
-    // -----------------------------------------
+    
     // 7. Monthly signup trend
-    // -----------------------------------------
+    
     const [signupTrendRows] =
       await pool.query<SignupTrendRow[]>(`
         SELECT
           DATE_FORMAT(signup_date, '%Y-%m') AS month,
           COUNT(*) AS users
 
-        FROM Users
+        FROM users
 
         GROUP BY DATE_FORMAT(signup_date, '%Y-%m')
 
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // Return API response
-    // -----------------------------------------
+    
     return NextResponse.json({
       stats: {
         totalUsers: Number(
-          userStatsRows[0]?.total_users ?? 0
+          userstatsRows[0]?.total_users ?? 0
         ),
 
         activeUsers: Number(
-          userStatsRows[0]?.active_users ?? 0
+          userstatsRows[0]?.active_users ?? 0
         ),
 
         inactiveUsers: Number(
-          userStatsRows[0]?.inactive_users ?? 0
+          userstatsRows[0]?.inactive_users ?? 0
         ),
 
         suspendedUsers: Number(
-          userStatsRows[0]?.suspended_users ?? 0
+          userstatsRows[0]?.suspended_users ?? 0
         ),
       },
 
@@ -246,7 +246,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error("Users API error:", error);
+    console.error("users API error:", error);
 
     return NextResponse.json(
       {

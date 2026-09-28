@@ -42,9 +42,9 @@ interface InstructorRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
+    
     // 1. Course statistics
-    // -----------------------------------------
+    
     const [courseStatsRows] =
       await pool.query<CourseStatsRow[]>(`
         SELECT
@@ -73,22 +73,22 @@ export async function GET() {
             END
           ) AS average_rating
 
-        FROM Courses c
+        FROM courses c
 
-        LEFT JOIN Enrollments e
+        LEFT JOIN enrollments e
           ON c.course_id = e.course_id
       `);
 
-    // -----------------------------------------
+    
     // 2. Course launch trend
-    // -----------------------------------------
+    
     const [launchTrendRows] =
       await pool.query<LaunchTrendRow[]>(`
         SELECT
           DATE_FORMAT(launch_date, '%Y-%m') AS month,
           COUNT(*) AS courses
 
-        FROM Courses
+        FROM courses
 
         WHERE launch_date IS NOT NULL
 
@@ -97,9 +97,9 @@ export async function GET() {
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // 3. Difficulty analysis
-    // -----------------------------------------
+    
     const [difficultyRows] =
       await pool.query<DifficultyRow[]>(`
         SELECT
@@ -116,9 +116,9 @@ export async function GET() {
             END
           ) AS average_rating
 
-        FROM Courses c
+        FROM courses c
 
-        LEFT JOIN Enrollments e
+        LEFT JOIN enrollments e
           ON c.course_id = e.course_id
 
         GROUP BY c.difficulty
@@ -132,9 +132,9 @@ export async function GET() {
           END
       `);
 
-    // -----------------------------------------
+    
     // 4. Top courses by enrollment
-    // -----------------------------------------
+    
     const [topCourseRows] =
       await pool.query<TopCourseRow[]>(`
         SELECT
@@ -142,9 +142,9 @@ export async function GET() {
           c.difficulty,
           COUNT(e.enrollment_id) AS enrollments
 
-        FROM Courses c
+        FROM courses c
 
-        LEFT JOIN Enrollments e
+        LEFT JOIN enrollments e
           ON c.course_id = e.course_id
 
         GROUP BY
@@ -157,9 +157,9 @@ export async function GET() {
         LIMIT 10
       `);
 
-    // -----------------------------------------
+    
     // 5. Courses by category
-    // -----------------------------------------
+    
     const [categoryRows] =
       await pool.query<CategoryRow[]>(`
         SELECT
@@ -169,12 +169,12 @@ export async function GET() {
 
           COUNT(e.enrollment_id) AS enrollments
 
-        FROM Categories cat
+        FROM categories cat
 
-        LEFT JOIN Courses c
+        LEFT JOIN courses c
           ON cat.category_id = c.category_id
 
-        LEFT JOIN Enrollments e
+        LEFT JOIN enrollments e
           ON c.course_id = e.course_id
 
         GROUP BY
@@ -184,9 +184,9 @@ export async function GET() {
         ORDER BY enrollments DESC
       `);
 
-    // -----------------------------------------
+    
     // 6. Courses by instructor
-    // -----------------------------------------
+    
     const [instructorRows] =
       await pool.query<InstructorRow[]>(`
         SELECT
@@ -200,9 +200,9 @@ export async function GET() {
 
           MAX(i.rating) AS instructor_rating
 
-        FROM Instructors i
+        FROM instructors i
 
-        LEFT JOIN Courses c
+        LEFT JOIN courses c
           ON i.instructor_id = c.instructor_id
 
         GROUP BY
@@ -215,9 +215,9 @@ export async function GET() {
         LIMIT 10
       `);
 
-    // -----------------------------------------
-    // Return API response
-    // -----------------------------------------
+    
+    // #Return API response
+    
     return NextResponse.json({
       stats: {
         totalCourses: Number(

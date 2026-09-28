@@ -39,9 +39,9 @@ interface MonthlyRow extends RowDataPacket {
 
 export async function GET() {
   try {
-    // -----------------------------------------
+    
     // 1. Support statistics
-    // -----------------------------------------
+    
     const [statsRows] =
       await pool.query<SupportStatsRow[]>(`
         SELECT
@@ -77,28 +77,28 @@ export async function GET() {
           AVG(customer_rating)
             AS average_customer_rating
 
-        FROM Support_Tickets
+        FROM support_tickets
       `);
 
-    // -----------------------------------------
+    
     // 2. Tickets by category
-    // -----------------------------------------
+    
     const [categoryRows] =
       await pool.query<CategoryRow[]>(`
         SELECT
           ticket_category AS category,
           COUNT(*) AS tickets
 
-        FROM Support_Tickets
+        FROM support_tickets
 
         GROUP BY ticket_category
 
         ORDER BY tickets DESC
       `);
 
-    // -----------------------------------------
+    
     // 3. Tickets by priority
-    // -----------------------------------------
+    
     const [priorityRows] =
       await pool.query<PriorityRow[]>(`
         SELECT
@@ -108,7 +108,7 @@ export async function GET() {
           AVG(resolution_time_hours)
             AS average_resolution_time
 
-        FROM Support_Tickets
+        FROM support_tickets
 
         GROUP BY priority
 
@@ -121,32 +121,32 @@ export async function GET() {
           END
       `);
 
-    // -----------------------------------------
+    
     // 4. Ticket status
-    // -----------------------------------------
+    
     const [statusRows] =
       await pool.query<StatusRow[]>(`
         SELECT
           ticket_status AS status,
           COUNT(*) AS tickets
 
-        FROM Support_Tickets
+        FROM support_tickets
 
         GROUP BY ticket_status
 
         ORDER BY tickets DESC
       `);
 
-    // -----------------------------------------
+    
     // 5. Customer rating distribution
-    // -----------------------------------------
+    
     const [ratingRows] =
       await pool.query<RatingRow[]>(`
         SELECT
           customer_rating AS rating,
           COUNT(*) AS tickets
 
-        FROM Support_Tickets
+        FROM support_tickets
 
         WHERE customer_rating IS NOT NULL
 
@@ -155,9 +155,9 @@ export async function GET() {
         ORDER BY customer_rating
       `);
 
-    // -----------------------------------------
+    
     // 6. Monthly ticket trend
-    // -----------------------------------------
+    
     const [monthlyRows] =
       await pool.query<MonthlyRow[]>(`
         SELECT
@@ -168,7 +168,7 @@ export async function GET() {
 
           COUNT(*) AS tickets
 
-        FROM Support_Tickets
+        FROM support_tickets
 
         GROUP BY DATE_FORMAT(
           created_date,
@@ -178,9 +178,9 @@ export async function GET() {
         ORDER BY month
       `);
 
-    // -----------------------------------------
+    
     // Return API response
-    // -----------------------------------------
+    
     return NextResponse.json({
       stats: {
         totalTickets: Number(
