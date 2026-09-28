@@ -7,9 +7,8 @@ from utils import save_to_mysql
 
 fake = Faker()
 
-# --------------------------------
+
 # Load Paid Users
-# --------------------------------
 
 users = pd.read_sql("""
 SELECT user_id,

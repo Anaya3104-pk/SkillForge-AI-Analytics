@@ -27,9 +27,8 @@ test = pd.read_sql("SELECT 1 AS connection_test", engine)
 
 print(test)
 
-# ==========================================
+
 # 1. USERS DATASET
-# ==========================================
 
 users = pd.read_sql("SELECT * FROM Users", engine)
 
@@ -45,9 +44,8 @@ print(users.info())
 print("\nBasic statistics:")
 print(users.describe(include="all"))
 
-# ==========================================
+
 # 2. DATA QUALITY CHECKS
-# ==========================================
 
 print("\n--- Missing Values ---")
 print(users.isnull().sum())
@@ -70,9 +68,8 @@ print(users["experience_level"].value_counts())
 print("\n--- Gender Distribution ---")
 print(users["gender"].value_counts())
 
-# ==========================================
+
 # 3. DATE CONVERSION
-# ==========================================
 
 users["date_of_birth"] = pd.to_datetime(users["date_of_birth"])
 users["signup_date"] = pd.to_datetime(users["signup_date"])
@@ -81,9 +78,9 @@ print("\nDate columns converted successfully!")
 
 print(users[["date_of_birth", "signup_date"]].dtypes)
 
-# ==========================================
+
 # 4. USER AGE ANALYSIS
-# ==========================================
+
 
 today = pd.Timestamp.today()
 
@@ -99,9 +96,9 @@ print("Oldest user:", users["age"].max())
 print("Average age:", users["age"].mean())
 
 
-# ==========================================
+
 # 5. USER AGE DISTRIBUTION
-# ==========================================
+
 
 plt.figure(figsize=(10, 6))
 
@@ -118,9 +115,9 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 7. USER SIGNUP TREND
-# ==========================================
+
 
 users["signup_month"] = users["signup_date"].dt.to_period("M")
 
@@ -153,9 +150,9 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 8. SUBSCRIPTION & ACCOUNT STATUS
-# ==========================================
+
 
 print("\n--- Subscription Distribution ---")
 
@@ -204,9 +201,9 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 9. PROFESSION DISTRIBUTION
-# ==========================================
+
 
 profession_counts = (
     users["profession"]
@@ -231,9 +228,8 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 10. COURSES DATASET
-# ==========================================
 
 courses = pd.read_sql("SELECT * FROM Courses", engine)
 

@@ -1,6 +1,6 @@
-# ==========================================
+
 # FEATURE USAGE EDA
-# ==========================================
+
 
 import sys
 from pathlib import Path
@@ -37,9 +37,8 @@ print(feature_usage.head())
 print("\n--- Data Types ---")
 print(feature_usage.dtypes)
 
-# ==========================================
+
 # 1. FEATURE USAGE DISTRIBUTION
-# ==========================================
 
 feature_counts = (
     feature_usage["feature_name"]
@@ -63,9 +62,9 @@ plt.ylabel("Feature")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. AVERAGE SESSION DURATION BY FEATURE
-# ==========================================
+
 
 avg_duration_feature = (
     feature_usage
@@ -91,9 +90,8 @@ plt.ylabel("Feature")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. FEATURE USAGE BY DEVICE
-# ==========================================
 
 feature_device = (
     feature_usage
@@ -122,9 +120,9 @@ plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. MONTHLY FEATURE USAGE TREND
-# ==========================================
+
 
 monthly_feature_usage = (
     feature_usage

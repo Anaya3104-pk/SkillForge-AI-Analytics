@@ -4,9 +4,9 @@ import pandas as pd
 from config import engine
 from utils import save_to_mysql
 
-# -----------------------------
+
 # Load Completed Enrollments
-# -----------------------------
+
 
 enrollments = pd.read_sql("""
 SELECT

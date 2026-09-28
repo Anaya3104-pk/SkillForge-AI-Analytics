@@ -10,15 +10,14 @@ from utils import save_to_mysql
 
 fake = Faker()
 
-# -----------------------------
+
 # Project Date Range
-# -----------------------------
 
 PROJECT_END_DATE = pd.Timestamp("2026-12-31")
 
-# -----------------------------
+
 # Load Users & Courses
-# -----------------------------
+
 
 users = pd.read_sql("""
 SELECT user_id,
@@ -39,9 +38,8 @@ difficulty_lookup = dict(
     zip(courses["course_id"], courses["difficulty"])
 )
 
-# -----------------------------
+
 # Helper Functions
-# -----------------------------
 
 def get_num_courses(subscription):
 
@@ -87,9 +85,8 @@ def get_rating():
     )[0]
 
 
-# -----------------------------
+
 # Generate Enrollments
-# -----------------------------
 
 rows = []
 
@@ -113,10 +110,9 @@ for _, user in tqdm(
 
         status = get_status(difficulty)
 
-        # --------------------------------
+        
         # Generate Enrollment Date
-        # --------------------------------
-
+        
         max_enrollment_days = (
             PROJECT_END_DATE - signup_date
         ).days
@@ -134,10 +130,9 @@ for _, user in tqdm(
 
             enroll_date = signup_date
 
-        # --------------------------------
+        
         # Completed
-        # --------------------------------
-
+        
         if status == "Completed":
 
             completion_percentage = 100
@@ -174,9 +169,9 @@ for _, user in tqdm(
                 certificate = 0
                 rating = None
 
-        # --------------------------------
+        
         # In Progress
-        # --------------------------------
+        
 
         elif status == "In Progress":
 
@@ -191,10 +186,9 @@ for _, user in tqdm(
 
             rating = None
 
-        # --------------------------------
+        
         # Dropped
-        # --------------------------------
-
+        
         else:
 
             completion_percentage = random.randint(
@@ -208,10 +202,9 @@ for _, user in tqdm(
 
             rating = None
 
-        # --------------------------------
+        
         # Add Row
-        # --------------------------------
-
+        
         rows.append({
 
             "user_id": user_id,
@@ -237,9 +230,8 @@ for _, user in tqdm(
         })
 
 
-# -----------------------------
+
 # Save to MySQL
-# -----------------------------
 
 df = pd.DataFrame(rows)
 

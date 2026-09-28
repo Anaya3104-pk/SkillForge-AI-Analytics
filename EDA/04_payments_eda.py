@@ -1,7 +1,7 @@
-# ==========================================
+
 # SKILLFORGE AI ANALYTICS
 # PAYMENTS EDA
-# ==========================================
+
 
 import sys
 from pathlib import Path
@@ -12,9 +12,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# ==========================================
+
 # DATABASE CONNECTION
-# ==========================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_GENERATOR = PROJECT_ROOT / "data_generator"
@@ -28,9 +27,9 @@ engine = config.engine
 print("Database engine loaded successfully!")
 
 
-# ==========================================
+
 # LOAD PAYMENTS DATA
-# ==========================================
+
 
 payments = pd.read_sql(
     "SELECT * FROM Payments",
@@ -53,18 +52,18 @@ print("\nMissing values:")
 print(payments.isnull().sum())
 
 
-# ==========================================
+
 # DATA TYPE CONVERSION
-# ==========================================
+
 
 payments["payment_date"] = pd.to_datetime(
     payments["payment_date"]
 )
 
 
-# ==========================================
+
 # BASIC PAYMENT ANALYSIS
-# ==========================================
+
 
 print("\n--- Payment Date Range ---")
 print("Earliest payment:", payments["payment_date"].min())
@@ -89,9 +88,9 @@ print("Average payment: ₹",
 
 
 
-# ==========================================
+
 # 1. PAYMENT STATUS DISTRIBUTION
-# ==========================================
+
 
 payment_status_counts = payments["payment_status"].value_counts()
 
@@ -113,9 +112,8 @@ plt.ylabel("Number of Payments")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. PAYMENT METHOD DISTRIBUTION
-# ==========================================
 
 payment_method_counts = payments["payment_method"].value_counts()
 
@@ -138,9 +136,8 @@ plt.xticks(rotation=20)
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. MONTHLY SUCCESSFUL REVENUE
-# ==========================================
 
 successful_payments = payments[
     payments["payment_status"] == "Success"
@@ -175,9 +172,8 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. PAYMENT AMOUNT DISTRIBUTION
-# ==========================================
 
 plt.figure(figsize=(9, 5))
 
@@ -195,9 +191,8 @@ plt.ylabel("Number of Payments")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 5. REVENUE BY SUBSCRIPTION PLAN
-# ==========================================
 
 subscription_plans = pd.read_sql(
     "SELECT subscription_id, plan_name FROM Subscription_Plans",

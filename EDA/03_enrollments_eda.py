@@ -1,7 +1,7 @@
-# ==========================================
+
 # SKILLFORGE AI ANALYTICS
 # ENROLLMENTS EDA
-# ==========================================
+
 
 import sys
 from pathlib import Path
@@ -12,9 +12,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# ==========================================
+
 # DATABASE CONNECTION
-# ==========================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_GENERATOR = PROJECT_ROOT / "data_generator"
@@ -28,9 +27,9 @@ engine = config.engine
 print("Database engine loaded successfully!")
 
 
-# ==========================================
+
 # LOAD ENROLLMENTS DATA
-# ==========================================
+
 
 enrollments = pd.read_sql(
     "SELECT * FROM Enrollments",
@@ -52,9 +51,8 @@ print(enrollments.describe(include="all"))
 print("\nMissing values:")
 print(enrollments.isnull().sum())
 
-# ==========================================
+
 # ENROLLMENT DATA QUALITY CHECK
-# ==========================================
 
 enrollments["enrollment_date"] = pd.to_datetime(
     enrollments["enrollment_date"]
@@ -85,9 +83,8 @@ print("\n--- Rating Distribution ---")
 print(enrollments["rating_given"].value_counts().sort_index())
 
 
-# ==========================================
+
 # DATE QUALITY CHECK
-# ==========================================
 
 print("\n--- Future Enrollment Dates ---")
 
@@ -107,9 +104,8 @@ future_completions = enrollments[
 print("Completions after 2026:", len(future_completions))
 
 
-# ==========================================
+
 # STATUS VS COMPLETION PERCENTAGE
-# ==========================================
 
 print("\n--- Completion Status vs Completion Percentage ---")
 
@@ -119,9 +115,9 @@ print(
 )
 
 
-# ==========================================
+
 # STATUS VS CERTIFICATE
-# ==========================================
+
 
 print("\n--- Completion Status vs Certificate ---")
 
@@ -148,9 +144,8 @@ print("Maximum enrollments per user:",
 print("\nEnrollment count distribution:")
 print(user_enrollment_counts.value_counts().sort_index())
 
-# ==========================================
+
 # 1. ENROLLMENT STATUS DISTRIBUTION
-# ==========================================
 
 status_counts = enrollments["completion_status"].value_counts()
 
@@ -172,9 +167,9 @@ plt.ylabel("Number of Enrollments")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. ENROLLMENT COMPLETION RATE
-# ==========================================
+
 
 status_percentage = (
     enrollments["completion_status"]
@@ -200,9 +195,9 @@ plt.ylabel("Percentage of Enrollments (%)")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. ENROLLMENT TREND OVER TIME
-# ==========================================
+
 
 enrollment_trend = (
     enrollments
@@ -228,9 +223,8 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. TOP 10 MOST POPULAR COURSES
-# ==========================================
 
 course_enrollments = (
     enrollments["course_id"]
@@ -256,9 +250,9 @@ plt.tight_layout()
 plt.show()
 
 
-# ==========================================
+
 # 5. TOP 10 COURSES BY ENROLLMENT
-# ==========================================
+
 
 courses = pd.read_sql(
     "SELECT course_id, course_name FROM Courses",
@@ -305,9 +299,9 @@ plt.ylabel("Course")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 6. COMPLETION RATE BY COURSE DIFFICULTY
-# ==========================================
+
 
 courses = pd.read_sql(
     "SELECT course_id, difficulty FROM Courses",

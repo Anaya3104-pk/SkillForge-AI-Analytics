@@ -131,3 +131,23 @@ WHERE completion_status = 'Completed'
   
   SELECT COUNT(*) AS certificate_count
 FROM Certificates;
+
+
+SELECT
+    COUNT(*) AS invalid_certificates
+FROM Certificates c
+LEFT JOIN Enrollments e
+    ON c.user_id = e.user_id
+   AND c.course_id = e.course_id
+WHERE e.enrollment_id IS NULL
+   OR e.completion_status <> 'Completed';
+   
+   SELECT
+    COUNT(*) AS completed_without_certificate
+FROM Enrollments e
+LEFT JOIN Certificates c
+    ON e.user_id = c.user_id
+   AND e.course_id = c.course_id
+WHERE e.completion_status = 'Completed'
+  AND e.certificate_earned = 1
+  AND c.certificate_id IS NULL;

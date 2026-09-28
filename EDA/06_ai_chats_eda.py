@@ -1,6 +1,6 @@
-# ==========================================
+
 # AI CHATS EDA
-# ==========================================
+
 
 import sys
 from pathlib import Path
@@ -34,9 +34,9 @@ print(ai_chats.head())
 print("\n--- Data Types ---")
 print(ai_chats.dtypes)
 
-# ==========================================
+
 # 1. AI CHAT TOPIC DISTRIBUTION
-# ==========================================
+
 
 topic_counts = (
     ai_chats["topic"]
@@ -60,9 +60,9 @@ plt.ylabel("Topic")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. AI RESPONSE TIME DISTRIBUTION
-# ==========================================
+
 
 print("\n--- Response Time Statistics ---")
 print(ai_chats["response_time_seconds"].describe())
@@ -83,9 +83,8 @@ plt.ylabel("Number of Chats")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. TOKEN USAGE DISTRIBUTION
-# ==========================================
 
 print("\n--- Token Usage Statistics ---")
 print(ai_chats["tokens_used"].describe())
@@ -106,9 +105,8 @@ plt.ylabel("Number of Chats")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. AI CHAT SATISFACTION RATING
-# ==========================================
 
 satisfaction_counts = (
     ai_chats["satisfaction_rating"]

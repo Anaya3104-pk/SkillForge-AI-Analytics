@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# ==========================================
+
 # DATABASE CONNECTION
-# ==========================================
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_GENERATOR = PROJECT_ROOT / "data_generator"
@@ -23,9 +23,8 @@ engine = config.engine
 print("Database engine loaded successfully!")
 
 
-# ==========================================
+
 # 1. COURSES DATASET
-# ==========================================
 
 courses = pd.read_sql("SELECT * FROM Courses", engine)
 
@@ -41,9 +40,9 @@ print(courses.info())
 print("\nBasic statistics:")
 print(courses.describe(include="all"))
 
-# ==========================================
+
 # 2. COURSE DIFFICULTY DISTRIBUTION
-# ==========================================
+
 
 difficulty_counts = courses["difficulty"].value_counts()
 
@@ -65,9 +64,9 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 3. COURSE PRICE DISTRIBUTION
-# ==========================================
+
 
 print("\n--- Course Price Statistics ---")
 print(courses["price"].describe())
@@ -88,9 +87,9 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 4. COURSE DURATION VS PRICE
-# ==========================================
+
 
 plt.figure(figsize=(8, 5))
 
@@ -107,9 +106,8 @@ plt.tight_layout()
 
 plt.show()
 
-# ==========================================
+
 # 5. COURSE LAUNCH TREND
-# ==========================================
 
 courses["launch_date"] = pd.to_datetime(courses["launch_date"])
 

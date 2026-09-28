@@ -8,15 +8,14 @@ from utils import save_to_mysql
 
 fake = Faker()
 
-# -----------------------------------
+
 # SETTINGS
-# -----------------------------------
+
 
 TOTAL_CHATS = 300000
 
-# -----------------------------------
+
 # Load Users
-# -----------------------------------
 
 users = pd.read_sql("""
 SELECT

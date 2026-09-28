@@ -1,6 +1,6 @@
-# ==========================================
+
 # SUPPORT TICKETS EDA
-# ==========================================
+
 
 import sys
 from pathlib import Path
@@ -37,9 +37,9 @@ print(support_tickets.head())
 print("\n--- Data Types ---")
 print(support_tickets.dtypes)
 
-# ==========================================
+
 # 1. TICKET CATEGORY DISTRIBUTION
-# ==========================================
+
 
 category_counts = (
     support_tickets["ticket_category"]
@@ -63,9 +63,9 @@ plt.ylabel("Ticket Category")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. TICKET PRIORITY DISTRIBUTION
-# ==========================================
+
 
 priority_counts = (
     support_tickets["priority"]
@@ -89,9 +89,9 @@ plt.ylabel("Number of Tickets")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. TICKET STATUS DISTRIBUTION
-# ==========================================
+
 
 status_counts = (
     support_tickets["ticket_status"]
@@ -115,9 +115,8 @@ plt.ylabel("Number of Tickets")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. AVERAGE RESOLUTION TIME BY PRIORITY
-# ==========================================
 
 resolved_tickets = support_tickets.dropna(
     subset=["resolution_time_hours"]
@@ -147,9 +146,9 @@ plt.ylabel("Average Resolution Time (Hours)")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 5. CUSTOMER RATING DISTRIBUTION
-# ==========================================
+
 
 rated_tickets = support_tickets.dropna(
     subset=["customer_rating"]

@@ -1,7 +1,6 @@
-# ==========================================
+
 # SKILLFORGE AI ANALYTICS
 # LOGIN HISTORY EDA
-# ==========================================
 
 import sys
 from pathlib import Path
@@ -12,9 +11,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# ==========================================
+
 # DATABASE CONNECTION
-# ==========================================
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_GENERATOR = PROJECT_ROOT / "data_generator"
@@ -28,9 +27,8 @@ engine = config.engine
 print("Database engine loaded successfully!")
 
 
-# ==========================================
+
 # LOAD LOGIN HISTORY DATA
-# ==========================================
 
 login_history = pd.read_sql(
     "SELECT * FROM Login_History",
@@ -53,9 +51,9 @@ print("\nMissing values:")
 print(login_history.isnull().sum())
 
 
-# ==========================================
+
 # DATA TYPE CONVERSION
-# ==========================================
+
 
 login_history["login_datetime"] = pd.to_datetime(
     login_history["login_datetime"]
@@ -66,9 +64,8 @@ login_history["logout_datetime"] = pd.to_datetime(
 )
 
 
-# ==========================================
+
 # BASIC LOGIN ANALYSIS
-# ==========================================
 
 print("\n--- Login Date Range ---")
 
@@ -130,9 +127,9 @@ print(
     "minutes"
 )
 
-# ==========================================
+
 # 1. DEVICE DISTRIBUTION
-# ==========================================
+
 
 device_counts = login_history["device"].value_counts()
 
@@ -153,9 +150,9 @@ plt.ylabel("Number of Logins")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 2. SESSION DURATION DISTRIBUTION
-# ==========================================
+
 
 plt.figure(figsize=(9, 5))
 
@@ -173,9 +170,9 @@ plt.ylabel("Number of Sessions")
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 3. MONTHLY LOGIN ACTIVITY
-# ==========================================
+
 
 monthly_logins = (
     login_history
@@ -203,9 +200,8 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# ==========================================
+
 # 4. AVERAGE SESSION DURATION BY DEVICE
-# ==========================================
 
 avg_session_device = (
     login_history
