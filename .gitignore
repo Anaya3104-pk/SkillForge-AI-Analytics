@@ -1,0 +1,32 @@
+# Python environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Secrets
+.env
+*.env
+config.py
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated datasets
+*.csv
+*.xlsx
+*.parquet
+
+# Python cache
+.pytest_cache/
+
+# Power BI temporary files
+*.pbi-cache
+*.pbi-local
